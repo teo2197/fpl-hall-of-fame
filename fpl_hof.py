@@ -244,10 +244,15 @@ def main():
     print(f"\nManagers tracked: {len(profiles)} ({len(roster)} live + {len(archive_names)} frozen)")
     print("Rendering HTML...")
 
-    from fpl_hof_render import render
-    html = render(profiles, known_seasons, tables, cur_season, roster, payments)
+    from fpl_hof_render import render, render_prizes_page
+    html = render(profiles, known_seasons, tables, cur_season)
     OUT_HTML.write_text(html, encoding="utf-8")
     print(f"Wrote {OUT_HTML} ({len(html):,} bytes)")
+
+    prizes_html = render_prizes_page(roster, payments)
+    prizes_path = ROOT / "prize-pot.html"
+    prizes_path.write_text(prizes_html, encoding="utf-8")
+    print(f"Wrote {prizes_path} ({len(prizes_html):,} bytes)")
 
 
 if __name__ == "__main__":

@@ -237,6 +237,13 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .paid-item:last-child,.unpaid-item:last-child{border-bottom:none}
 .paid-check{color:var(--green)}
 .unpaid-check{color:var(--dim)}
+
+/* ── NAV ── */
+.topnav{display:flex;justify-content:center;gap:8px;padding:20px 20px 0}
+.topnav a{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;
+  color:rgba(255,255,255,.55);text-decoration:none;padding:8px 18px;border-radius:20px;border:1px solid transparent;transition:all .15s}
+.topnav a:hover{color:var(--text);border-color:var(--border)}
+.topnav a.active{color:var(--bg);background:var(--green)}
 </style>
 </head>
 <body>
@@ -458,6 +465,18 @@ def fmt(n):
     return f"{n:,}" if n is not None else "—"
 
 
+def nav_html(active):
+    def link(href, label, key):
+        cls = ' class="active"' if key == active else ""
+        return f'<a href="{href}"{cls}>{label}</a>'
+    return f"""
+<div class="topnav">
+  {link("index.html", "Hall of Fame", "home")}
+  {link("prize-pot.html", "💰 Prize Pot", "prizes")}
+</div>
+"""
+
+
 def build_prize_pot_section(roster, payments):
     fee = payments["fee_per_person"]
     currency = payments.get("currency", "EUR")
@@ -493,10 +512,10 @@ def build_prize_pot_section(roster, payments):
       </div>"""
 
     paid_html = "".join(
-        f'<div class="paid-item"><span class="paid-check">✓</span>{plink(n)}</div>' for n in sorted(paid_names)
+        f'<div class="paid-item"><span class="paid-check">✓</span>{esc(n)}</div>' for n in sorted(paid_names)
     )
     unpaid_html = "".join(
-        f'<div class="unpaid-item"><span class="unpaid-check">○</span>{plink(n)}</div>' for n in unpaid_names
+        f'<div class="unpaid-item"><span class="unpaid-check">○</span>{esc(n)}</div>' for n in unpaid_names
     )
 
     return f"""
@@ -520,7 +539,33 @@ def build_prize_pot_section(roster, payments):
 """
 
 
-def render(profiles, known_seasons, tables, cur_season, roster=None, payments=None):
+def render_prizes_page(roster, payments):
+    body = build_prize_pot_section(roster, payments)
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prize Pot — FPL Classics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+{HEAD.split("<style>")[1].split("</style>")[0]}
+</style>
+</head>
+<body>
+{nav_html("prizes")}
+<div class="hero" style="padding:50px 40px 30px">
+  <div class="hero-eyebrow">FPL Classics · League #37785</div>
+  <div class="hero-title" style="font-size:clamp(2.2rem,6vw,4rem)">Prize Pot</div>
+</div>
+{body}
+<div class="footer"><p>FPL Classics · League #37785</p></div>
+</body>
+</html>"""
+
+
+def render(profiles, known_seasons, tables, cur_season):
     all_seasons = sorted(known_seasons.keys())
     latest = all_seasons[-1] if all_seasons else None
     distinct_winners = {v["winner"]["name"] for v in known_seasons.values()}
@@ -851,12 +896,10 @@ const CUR_SEASON = {json.dumps(cur_season, ensure_ascii=False)};
 </body>
 </html>"""
 
-    prize_pot_section = build_prize_pot_section(roster, payments) if roster and payments else ""
-
     return (
         HEAD
+        + nav_html("home")
         + hero
-        + prize_pot_section
         + season_cards_section
         + hof_table_section
         + champs_section
