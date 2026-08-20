@@ -1,0 +1,38 @@
+{
+  "_comment": "Active roster tracked live via the FPL API, league #37785 ('Classics League'). Entry IDs sourced from that league's member list on 2026-08-20. join = first season counted for stats/awards.",
+  "league_id": 37785,
+  "managers": {
+    "Matteo Ebejer":            { "entry_id": 184140,  "join": "2016/17" },
+    "Ian Falzon":                { "entry_id": 4781444, "join": "2016/17" },
+    "Jamie Sciberras":           { "entry_id": 319749,  "join": "2016/17" },
+    "Max Thake":                 { "entry_id": 6306878, "join": "2016/17" },
+    "Jon Sultana":                { "entry_id": 1389203, "join": "2016/17" },
+    "Timmy Critien":             { "entry_id": 2667835, "join": "2016/17" },
+    "Andre Galea":                { "entry_id": 6792,    "join": "2016/17" },
+    "Michael Tonna":             { "entry_id": 4754077, "join": "2016/17" },
+    "Jordan Sammut":             { "entry_id": 6264971, "join": "2016/17" },
+    "Jamie Dent":                 { "entry_id": 2578424, "join": "2016/17" },
+
+    "David Camilleri":           { "entry_id": 609214,  "join": "2020/21" },
+    "Jeremy Sant Fournier":      { "entry_id": 2348219, "join": "2020/21" },
+
+    "Teemu Hietala":             { "entry_id": 1445589, "join": "2021/22" },
+
+    "Nick Paris":                 { "entry_id": 118767,  "join": "2022/23" },
+    "Kylie Schembri":            { "entry_id": 65419,   "join": "2022/23" },
+    "Jacob Borg":                 { "entry_id": 1172881, "join": "2022/23" },
+    "Gary Azzopardi":            { "entry_id": 5657980, "join": "2022/23" },
+    "Daniel Erber":               { "entry_id": 137518,  "join": "2022/23" },
+    "Konstantin Hammermüller":   { "entry_id": 1563603, "join": "2022/23" },
+    "Carl Gatt Baldacchino":     { "entry_id": 2450291, "join": "2022/23" },
+    "Gaetano Gesualdi":          { "entry_id": 3483168, "join": "2022/23" },
+    "Malcolm Gatt Baldacchino":  { "entry_id": 6691834, "join": "2022/23" },
+
+    "Adam Ryan":                  { "entry_id": 6050572, "join": "2026/27" },
+    "Erik Gollcher":             { "entry_id": 4622692, "join": "2026/27" },
+    "Luca Brincat":               { "entry_id": 801564,  "join": "2026/27" },
+    "Eamonn Mifsud":             { "entry_id": 14148,   "join": "2026/27" },
+    "Sean Abela":                 { "entry_id": 777124,  "join": "2026/27" },
+    "Ben Caruana":                { "entry_id": 25952,   "join": "2026/27" }
+  }
+}

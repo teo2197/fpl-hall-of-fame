@@ -1,0 +1,45 @@
+{
+  "_comment": "Frozen, verified winner/runner-up record for completed seasons. 2016/17-2021/22 manually verified against archived league standings (no live API access to the old league object). 2022/23-2025/26 captured from the last known-good generated site before the league was recreated on 2026-07-23, then verified against each manager's official FPL entry history. 2018/19 rank for Matteo Ebejer was corrected from 46860 (a transcription of his 2019/20 rank) to the true value 56628, confirmed via https://fantasy.premierleague.com/api/entry/184140/history/ on 2026-08-20. New seasons from 2026/27 onward are appended live from league #37785, not edited here.",
+  "seasons": {
+    "2016/17": {
+      "winner":   { "name": "Matteo Ebejer", "pts": 2225, "rank": 45767 },
+      "runner_up":{ "name": "Ian Falzon",    "pts": 2209, "rank": 58790 }
+    },
+    "2017/18": {
+      "winner":   { "name": "Jordan Sammut", "pts": 2224, "rank": 81865 },
+      "runner_up":{ "name": "Ian Falzon",    "pts": 2210, "rank": 105077 }
+    },
+    "2018/19": {
+      "winner":   { "name": "Matteo Ebejer", "pts": 2302, "rank": 56628 },
+      "runner_up":{ "name": "Ian Falzon",    "pts": 2292, "rank": 67588 }
+    },
+    "2019/20": {
+      "winner":   { "name": "Jamie Dent",          "pts": 2320, "rank": 30425 },
+      "runner_up":{ "name": "Stefan Stojanovic",   "pts": null, "rank": null, "left_league": true }
+    },
+    "2020/21": {
+      "winner":   { "name": "Jon Sultana",   "pts": 2499, "rank": 7869 },
+      "runner_up":{ "name": "Matteo Ebejer", "pts": 2480, "rank": 13961 }
+    },
+    "2021/22": {
+      "winner":   { "name": "Matteo Ebejer", "pts": 2603, "rank": 17391 },
+      "runner_up":{ "name": "Teemu Hietala", "pts": 2566, "rank": 37375 }
+    },
+    "2022/23": {
+      "winner":   { "name": "Kylie Schembri", "pts": 2589, "rank": 18624 },
+      "runner_up":{ "name": "Andre Galea",    "pts": 2573, "rank": 31018 }
+    },
+    "2023/24": {
+      "winner":   { "name": "Nick Paris",     "pts": 2592, "rank": 4967 },
+      "runner_up":{ "name": "Matteo Ebejer",  "pts": 2534, "rank": 34155 }
+    },
+    "2024/25": {
+      "winner":   { "name": "Jacob Borg",  "pts": 2573, "rank": 22631 },
+      "runner_up":{ "name": "Andre Galea", "pts": 2528, "rank": 70563 }
+    },
+    "2025/26": {
+      "winner":   { "name": "Max Thake",  "pts": 2332, "rank": 87482 },
+      "runner_up":{ "name": "Nick Paris", "pts": 2318, "rank": 123422 }
+    }
+  }
+}

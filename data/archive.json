@@ -1,0 +1,4 @@
+{
+  "_comment": "Managers with verified historical data in history_seed.json who are NOT in roster.json (haven't rejoined league #37785 as of 2026-08-20, or in 'Adam A' vs 'Adam Ryan''s case, a different person now holds that first name). Their season data stays frozen at whatever is in history_seed.json -- the generator never re-fetches or updates them. If any of them join a future league and you get their entry_id, move them into roster.json instead.",
+  "frozen_managers": ["Andrew Borg", "Fran Demicoli", "Chrisi H.", "Adam A"]
+}
