@@ -221,6 +221,7 @@ def main():
     archive_names = load_json("archive.json")["frozen_managers"]
     history_seed = load_json("history_seed.json")
     known_seasons = load_json("known_seasons.json")["seasons"]
+    payments = load_json("payments.json")
     cur_season = current_season_label()
 
     print(f"Current season: {cur_season}")
@@ -244,7 +245,7 @@ def main():
     print("Rendering HTML...")
 
     from fpl_hof_render import render
-    html = render(profiles, known_seasons, tables, cur_season)
+    html = render(profiles, known_seasons, tables, cur_season, roster, payments)
     OUT_HTML.write_text(html, encoding="utf-8")
     print(f"Wrote {OUT_HTML} ({len(html):,} bytes)")
 

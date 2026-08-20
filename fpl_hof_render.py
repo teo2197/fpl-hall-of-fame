@@ -217,6 +217,26 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 }
 
 .footer{text-align:center;padding:60px 20px 40px;color:var(--dim);font-size:.75rem;line-height:1.8;max-width:600px;margin:0 auto}
+
+/* ── PRIZE POT ── */
+.pot-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
+@media(max-width:700px){.pot-summary{grid-template-columns:1fr}}
+.pot-stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 22px;text-align:center}
+.pot-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:900;line-height:1;color:var(--green)}
+.pot-stat-key{font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);margin-top:6px}
+.pot-bar-wrap{height:10px;background:rgba(255,255,255,.06);border-radius:5px;overflow:hidden;margin:4px 0 24px}
+.pot-bar{height:100%;background:linear-gradient(90deg,#00ff87,#04f5ff);border-radius:5px;transition:width .4s ease}
+.prize-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+@media(max-width:800px){.prize-grid{grid-template-columns:1fr 1fr}}
+.prize-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center}
+.prize-card-label{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.prize-card-val{font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:800}
+.paid-columns{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:700px){.paid-columns{grid-template-columns:1fr}}
+.paid-item,.unpaid-item{display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid rgba(30,37,53,.5);font-size:.88rem}
+.paid-item:last-child,.unpaid-item:last-child{border-bottom:none}
+.paid-check{color:var(--green)}
+.unpaid-check{color:var(--dim)}
 </style>
 </head>
 <body>
@@ -438,7 +458,69 @@ def fmt(n):
     return f"{n:,}" if n is not None else "—"
 
 
-def render(profiles, known_seasons, tables, cur_season):
+def build_prize_pot_section(roster, payments):
+    fee = payments["fee_per_person"]
+    currency = payments.get("currency", "EUR")
+    paid_names = set(payments["paid"])
+    all_names = sorted(roster.keys())
+    unpaid_names = [n for n in all_names if n not in paid_names]
+
+    collected = len(paid_names) * fee
+    expected = len(all_names) * fee
+    pct_collected = round(100 * len(paid_names) / len(all_names)) if all_names else 0
+
+    prizes = payments["prizes"]
+    monthly_pool_pct = prizes["monthly_pool_pct"] * 100
+    monthly_each_pct = prizes["monthly_pool_pct"] * 100 / prizes["monthly_count"]
+    podium = prizes["podium_pct"]
+
+    prize_cards = f"""
+      <div class="prize-card" style="border-bottom:3px solid #ffd700">
+        <div class="prize-card-label">🥇 1st Place</div>
+        <div class="prize-card-val" style="color:#ffd700">{podium['1st']*100:.0f}%</div>
+      </div>
+      <div class="prize-card" style="border-bottom:3px solid #c0c0c0">
+        <div class="prize-card-label">🥈 2nd Place</div>
+        <div class="prize-card-val" style="color:#c0c0c0">{podium['2nd']*100:.0f}%</div>
+      </div>
+      <div class="prize-card" style="border-bottom:3px solid #cd7f32">
+        <div class="prize-card-label">🥉 3rd Place</div>
+        <div class="prize-card-val" style="color:#cd7f32">{podium['3rd']*100:.0f}%</div>
+      </div>
+      <div class="prize-card" style="border-bottom:3px solid #22c55e">
+        <div class="prize-card-label">📅 Per Month ({prizes['monthly_count']}×)</div>
+        <div class="prize-card-val" style="color:#22c55e">{monthly_each_pct:.1f}%</div>
+      </div>"""
+
+    paid_html = "".join(
+        f'<div class="paid-item"><span class="paid-check">✓</span>{plink(n)}</div>' for n in sorted(paid_names)
+    )
+    unpaid_html = "".join(
+        f'<div class="unpaid-item"><span class="unpaid-check">○</span>{plink(n)}</div>' for n in unpaid_names
+    )
+
+    return f"""
+<div class="section">
+  <div class="sec-label">Prize Pot — {payments.get('season', '')}</div>
+  <div class="pot-summary">
+    <div class="pot-stat"><div class="pot-stat-val">{len(paid_names)}/{len(all_names)}</div><div class="pot-stat-key">Managers Paid</div></div>
+    <div class="pot-stat"><div class="pot-stat-val">{fee} {currency}</div><div class="pot-stat-key">Entry Fee (p/p)</div></div>
+    <div class="pot-stat"><div class="pot-stat-val">{collected:,} / {expected:,} {currency}</div><div class="pot-stat-key">Collected / Full Pot</div></div>
+  </div>
+  <div class="pot-bar-wrap"><div class="pot-bar" style="width:{pct_collected}%"></div></div>
+  <div class="sec-label" style="margin-top:8px">Prize Structure (% of final pot — 1st/2nd/3rd + {prizes['monthly_count']} monthly prizes, {monthly_pool_pct:.0f}% of pot total)</div>
+  <div class="prize-grid">{prize_cards}</div>
+  <div class="card">
+    <div class="paid-columns">
+      <div><div style="padding:14px 18px;font-weight:700;border-bottom:1px solid var(--border)">✅ Paid ({len(paid_names)})</div>{paid_html}</div>
+      <div><div style="padding:14px 18px;font-weight:700;border-bottom:1px solid var(--border)">⏳ Not Paid Yet ({len(unpaid_names)})</div>{unpaid_html}</div>
+    </div>
+  </div>
+</div>
+"""
+
+
+def render(profiles, known_seasons, tables, cur_season, roster=None, payments=None):
     all_seasons = sorted(known_seasons.keys())
     latest = all_seasons[-1] if all_seasons else None
     distinct_winners = {v["winner"]["name"] for v in known_seasons.values()}
@@ -769,9 +851,12 @@ const CUR_SEASON = {json.dumps(cur_season, ensure_ascii=False)};
 </body>
 </html>"""
 
+    prize_pot_section = build_prize_pot_section(roster, payments) if roster and payments else ""
+
     return (
         HEAD
         + hero
+        + prize_pot_section
         + season_cards_section
         + hof_table_section
         + champs_section

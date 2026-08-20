@@ -1,0 +1,27 @@
+{
+  "_comment": "Entry fee tracking for the 2026/27 season. Update 'paid' as people pay, then re-run fpl_hof.py and push to update the live site.",
+  "fee_per_person": 50,
+  "currency": "EUR",
+  "season": "2026/27",
+  "paid": [
+    "Andre Galea",
+    "Nick Paris",
+    "Jordan Sammut",
+    "Daniel Erber",
+    "Jamie Sciberras",
+    "Ben Caruana",
+    "Adam Ryan",
+    "Luca Brincat",
+    "Eamonn Mifsud",
+    "Sean Abela",
+    "Teemu Hietala",
+    "Gaetano Gesualdi"
+  ],
+  "_prizes_comment": "Shown as % of the total pot until the pot is finalized (everyone paid / season underway). Once locked in, switch prize_display to 'amount' to show euro figures instead.",
+  "prize_display": "percent",
+  "prizes": {
+    "monthly_pool_pct": 0.20,
+    "monthly_count": 10,
+    "podium_pct": { "1st": 0.40, "2nd": 0.24, "3rd": 0.16 }
+  }
+}
