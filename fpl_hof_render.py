@@ -496,15 +496,15 @@ def build_prize_pot_section(roster, payments):
     prize_cards = f"""
       <div class="prize-card" style="border-bottom:3px solid #ffd700">
         <div class="prize-card-label">🥇 1st Place</div>
-        <div class="prize-card-val" style="color:#ffd700">{podium['1st']*100:.0f}%</div>
+        <div class="prize-card-val" style="color:#ffd700">{podium['1st']*100:.1f}%</div>
       </div>
       <div class="prize-card" style="border-bottom:3px solid #c0c0c0">
         <div class="prize-card-label">🥈 2nd Place</div>
-        <div class="prize-card-val" style="color:#c0c0c0">{podium['2nd']*100:.0f}%</div>
+        <div class="prize-card-val" style="color:#c0c0c0">{podium['2nd']*100:.1f}%</div>
       </div>
       <div class="prize-card" style="border-bottom:3px solid #cd7f32">
         <div class="prize-card-label">🥉 3rd Place</div>
-        <div class="prize-card-val" style="color:#cd7f32">{podium['3rd']*100:.0f}%</div>
+        <div class="prize-card-val" style="color:#cd7f32">{podium['3rd']*100:.1f}%</div>
       </div>
       <div class="prize-card" style="border-bottom:3px solid #22c55e">
         <div class="prize-card-label">📅 Per Month ({prizes['monthly_count']}×)</div>
