@@ -1,5 +1,5 @@
 {
-  "_comment": "Frozen, verified winner/runner-up record for completed seasons. 2016/17-2021/22 manually verified against archived league standings (no live API access to the old league object). 2022/23-2025/26 captured from the last known-good generated site before the league was recreated on 2026-07-23, then verified against each manager's official FPL entry history. 2018/19 rank for Matteo Ebejer was corrected from 46860 (a transcription of his 2019/20 rank) to the true value 56628, confirmed via https://fantasy.premierleague.com/api/entry/184140/history/ on 2026-08-20. New seasons from 2026/27 onward are appended live from league #37785, not edited here.",
+  "_comment": "Frozen, verified winner/runner-up record for completed seasons. 2016/17-2021/22 manually verified against archived league standings (no live API access to the old league object). 2022/23-2025/26 captured from the last known-good generated site before the league was recreated on 2026-07-23, then verified against each manager's official FPL entry history. 2018/19 rank for Matteo Ebejer was corrected from 46860 (a transcription of his 2019/20 rank) to the true value 56628, confirmed via https://fantasy.premierleague.com/api/entry/184140/history/ on 2026-08-20. 2022/23 winner was corrected from Kylie Schembri to Andre Galea on 2026-08-20 -- Kylie was not actually in the league that season (confirmed by the league admin from memory); Andre Galea (2,573 pts) and Matteo Ebejer (2,569 pts) were the real 1st/2nd once she's excluded. See history_seed.json for the corresponding removal of Kylie's phantom 2022/23 season from her own record. New seasons from 2026/27 onward are appended live from league #37785, not edited here.",
   "seasons": {
     "2016/17": {
       "winner":   { "name": "Matteo Ebejer", "pts": 2225, "rank": 45767 },
@@ -26,8 +26,8 @@
       "runner_up":{ "name": "Teemu Hietala", "pts": 2566, "rank": 37375 }
     },
     "2022/23": {
-      "winner":   { "name": "Kylie Schembri", "pts": 2589, "rank": 18624 },
-      "runner_up":{ "name": "Andre Galea",    "pts": 2573, "rank": 31018 }
+      "winner":   { "name": "Andre Galea",    "pts": 2573, "rank": 31018 },
+      "runner_up":{ "name": "Matteo Ebejer",  "pts": 2569, "rank": 34549 }
     },
     "2023/24": {
       "winner":   { "name": "Nick Paris",     "pts": 2592, "rank": 4967 },

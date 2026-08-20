@@ -162,10 +162,21 @@ def recompute_derived(p):
 
 
 def apply_known_seasons(profiles, known_seasons):
-    """Stamp won/runner flags + fill missing pos/total onto career rows using
-    the curated historical record, so the frozen per-manager data and the
-    hardcoded season table can never disagree (this is what caused the
-    original 2018/19 bug — two sources of truth that drifted apart)."""
+    """Stamp won/runner flags onto career rows using the curated historical
+    record, so the frozen per-manager data and the hardcoded season table can
+    never disagree (this is what caused the original 2018/19 bug — two
+    sources of truth that drifted apart). Known seasons are the ONLY source
+    of truth for these flags: always reset every career row for a known
+    season to False first, then set exactly what known_seasons says. Without
+    this reset, correcting a past season's winner (e.g. 2022/23) leaves the
+    old runner-up's stale flag in place alongside the newly-stamped one."""
+    known_season_names = set(known_seasons.keys())
+    for p in profiles.values():
+        for c in p["career"]:
+            if c["s"] in known_season_names:
+                c["won"] = False
+                c["runner"] = False
+
     for season, result in known_seasons.items():
         for role, flag in (("winner", "won"), ("runner_up", "runner")):
             who = result[role]["name"]
