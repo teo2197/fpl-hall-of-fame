@@ -15,9 +15,19 @@
     "Eamonn Mifsud",
     "Sean Abela",
     "Teemu Hietala",
-    "Gaetano Gesualdi"
+    "Gaetano Gesualdi",
+    "Miguel Galea",
+    "Adam A",
+    "Michael Tonna",
+    "Jon Sultana",
+    "Jacob Borg",
+    "Gary Azzopardi",
+    "Kylie Schembri",
+    "Konstantin Hammermüller",
+    "Ian Falzon",
+    "Max Thake"
   ],
-  "_prizes_comment": "Shown as % of the total pot until the pot is finalized (everyone paid / season underway). Once locked in, switch prize_display to 'amount' to show euro figures instead. Percentages below are calibrated so each monthly prize ~= 30 EUR assuming the full 28-manager pot (1,400 EUR) -- if fewer end up paying, the % stays fixed but actual payouts scale down proportionally.",
+  "_prizes_comment": "Shown as % of the total pot until the pot is finalized (everyone paid / season underway). Once locked in, switch prize_display to 'amount' to show euro figures instead. Percentages below were calibrated on 2026-08-20 so each monthly prize ~= 30 EUR assuming the 28-manager pot at the time (1,400 EUR) -- the roster has since grown to 30, so the actual full pot is now 1,500 EUR and monthly prizes will land a bit above 30 EUR if everyone pays. Recalibrate if you want it pinned exactly to 30.",
   "prize_display": "percent",
   "prizes": {
     "monthly_pool_pct": 0.2143,
