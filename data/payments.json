@@ -34,15 +34,15 @@
     "David Camilleri",
     "Timmy Critien"
   ],
-  "_prizes_comment": "Shown as % of the total pot until the pot is finalized (everyone paid / season underway). Once locked in, switch prize_display to 'amount' to show euro figures instead. Percentages below were calibrated on 2026-08-20 so each monthly prize ~= 30 EUR assuming the 28-manager pot at the time (1,400 EUR) -- the roster has since grown to 30, so the actual full pot is now 1,500 EUR and monthly prizes will land a bit above 30 EUR if everyone pays. Recalibrate if you want it pinned exactly to 30.",
+  "_prizes_comment": "Pot finalized at 1,450 EUR (29 paid managers). Recalibrated on 2026-08-20 so each monthly prize is exactly 30 EUR: 300 EUR total monthly pool (20.69% of pot), remaining 1,150 EUR split 50/30/20 among 1st/2nd/3rd = 575/345/230 EUR.",
   "prize_display": "amount",
   "prizes": {
-    "monthly_pool_pct": 0.2143,
+    "monthly_pool_pct": 0.2069,
     "monthly_count": 10,
     "podium_pct": {
-      "1st": 0.3929,
-      "2nd": 0.2357,
-      "3rd": 0.1571
+      "1st": 0.3966,
+      "2nd": 0.2379,
+      "3rd": 0.1586
     }
   }
 }
