@@ -34,15 +34,15 @@
     "David Camilleri",
     "Timmy Critien"
   ],
-  "_prizes_comment": "Pot finalized at 1,450 EUR (29 paid managers). Recalibrated on 2026-08-20 so each monthly prize is exactly 30 EUR: 300 EUR total monthly pool (20.69% of pot), remaining 1,150 EUR split 50/30/20 among 1st/2nd/3rd = 575/345/230 EUR.",
+  "_prizes_comment": "Pot finalized at 1,450 EUR (29 paid managers). Recalibrated on 2026-08-20 so each monthly prize is exactly 40 EUR: 400 EUR total monthly pool, remaining 1,050 EUR split 50/30/20 among 1st/2nd/3rd = 525/315/210 EUR. 10 months confirmed against the official FPL 2026/27 schedule (GW1 deadline 2026-08-21, GW38 deadline 2027-05-30, at least 2 GWs in every month Aug-May).",
   "prize_display": "amount",
   "prizes": {
-    "monthly_pool_pct": 0.2069,
+    "monthly_pool_pct": 0.27586206896551724,
     "monthly_count": 10,
     "podium_pct": {
-      "1st": 0.3966,
-      "2nd": 0.2379,
-      "3rd": 0.1586
+      "1st": 0.3620689655172414,
+      "2nd": 0.21724137931034482,
+      "3rd": 0.14482758620689656
     }
   }
 }
