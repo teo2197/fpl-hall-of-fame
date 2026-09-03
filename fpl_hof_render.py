@@ -492,23 +492,29 @@ def build_prize_pot_section(roster, payments):
     monthly_pool_pct = prizes["monthly_pool_pct"] * 100
     monthly_each_pct = prizes["monthly_pool_pct"] * 100 / prizes["monthly_count"]
     podium = prizes["podium_pct"]
+    show_amount = payments.get("prize_display") == "amount"
+
+    def prize_val(pct):
+        if show_amount:
+            return f"{round(pct * expected):,} {currency}"
+        return f"{pct*100:.1f}%"
 
     prize_cards = f"""
       <div class="prize-card" style="border-bottom:3px solid #ffd700">
         <div class="prize-card-label">🥇 1st Place</div>
-        <div class="prize-card-val" style="color:#ffd700">{podium['1st']*100:.1f}%</div>
+        <div class="prize-card-val" style="color:#ffd700">{prize_val(podium['1st'])}</div>
       </div>
       <div class="prize-card" style="border-bottom:3px solid #c0c0c0">
         <div class="prize-card-label">🥈 2nd Place</div>
-        <div class="prize-card-val" style="color:#c0c0c0">{podium['2nd']*100:.1f}%</div>
+        <div class="prize-card-val" style="color:#c0c0c0">{prize_val(podium['2nd'])}</div>
       </div>
       <div class="prize-card" style="border-bottom:3px solid #cd7f32">
         <div class="prize-card-label">🥉 3rd Place</div>
-        <div class="prize-card-val" style="color:#cd7f32">{podium['3rd']*100:.1f}%</div>
+        <div class="prize-card-val" style="color:#cd7f32">{prize_val(podium['3rd'])}</div>
       </div>
       <div class="prize-card" style="border-bottom:3px solid #22c55e">
         <div class="prize-card-label">📅 Per Month ({prizes['monthly_count']}×)</div>
-        <div class="prize-card-val" style="color:#22c55e">{monthly_each_pct:.1f}%</div>
+        <div class="prize-card-val" style="color:#22c55e">{prize_val(prizes['monthly_pool_pct']/prizes['monthly_count'])}</div>
       </div>"""
 
     paid_html = "".join(
@@ -527,7 +533,7 @@ def build_prize_pot_section(roster, payments):
     <div class="pot-stat"><div class="pot-stat-val">{collected:,} / {expected:,} {currency}</div><div class="pot-stat-key">Collected / Full Pot</div></div>
   </div>
   <div class="pot-bar-wrap"><div class="pot-bar" style="width:{pct_collected}%"></div></div>
-  <div class="sec-label" style="margin-top:8px">Prize Structure (% of final pot — 1st/2nd/3rd + {prizes['monthly_count']} monthly prizes, {monthly_pool_pct:.0f}% of pot total)</div>
+  <div class="sec-label" style="margin-top:8px">Prize Structure — 1st/2nd/3rd + {prizes['monthly_count']} monthly prizes{'' if show_amount else f' ({monthly_pool_pct:.0f}% of pot to monthly prizes)'}</div>
   <div class="prize-grid">{prize_cards}</div>
   <div class="card">
     <div class="paid-columns">
