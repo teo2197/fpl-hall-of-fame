@@ -233,6 +233,7 @@ def main():
     history_seed = load_json("history_seed.json")
     known_seasons = load_json("known_seasons.json")["seasons"]
     payments = load_json("payments.json")
+    monthly_winners = load_json("monthly_winners.json")
     cur_season = current_season_label()
 
     print(f"Current season: {cur_season}")
@@ -260,7 +261,7 @@ def main():
     OUT_HTML.write_text(html, encoding="utf-8")
     print(f"Wrote {OUT_HTML} ({len(html):,} bytes)")
 
-    prizes_html = render_prizes_page(roster, payments)
+    prizes_html = render_prizes_page(roster, payments, monthly_winners)
     prizes_path = ROOT / "prize-pot.html"
     prizes_path.write_text(prizes_html, encoding="utf-8")
     print(f"Wrote {prizes_path} ({len(prizes_html):,} bytes)")

@@ -517,13 +517,6 @@ def build_prize_pot_section(roster, payments):
         <div class="prize-card-val" style="color:#22c55e">{prize_val(prizes['monthly_pool_pct']/prizes['monthly_count'])}</div>
       </div>"""
 
-    paid_html = "".join(
-        f'<div class="paid-item"><span class="paid-check">✓</span>{esc(n)}</div>' for n in sorted(paid_names)
-    )
-    unpaid_html = "".join(
-        f'<div class="unpaid-item"><span class="unpaid-check">○</span>{esc(n)}</div>' for n in unpaid_names
-    )
-
     return f"""
 <div class="section">
   <div class="sec-label">Prize Pot — {payments.get('season', '')}</div>
@@ -535,18 +528,40 @@ def build_prize_pot_section(roster, payments):
   <div class="pot-bar-wrap"><div class="pot-bar" style="width:{pct_collected}%"></div></div>
   <div class="sec-label" style="margin-top:8px">Prize Structure — 1st/2nd/3rd + {prizes['monthly_count']} monthly prizes{'' if show_amount else f' ({monthly_pool_pct:.0f}% of pot to monthly prizes)'}</div>
   <div class="prize-grid">{prize_cards}</div>
+</div>
+"""
+
+
+def build_monthly_winners_section(monthly_winners, currency="EUR"):
+    months = monthly_winners.get("months", [])
+    rows = "".join(
+        f"""<tr>
+          <td class="tname">{esc(m['label'])}</td>
+          <td class="tname">🏆 {esc(m['winner'])}</td>
+          <td class="tnum teal">{m['points']}</td>
+          <td class="tnum green">{m['prize_eur']} {currency}</td>
+        </tr>"""
+        for m in months
+    )
+    if not rows:
+        rows = '<tr><td colspan="4" class="dim" style="padding:20px 18px">No months decided yet.</td></tr>'
+    return f"""
+<div class="section">
+  <div class="sec-label">Monthly Winners — {monthly_winners.get('season', '')}</div>
   <div class="card">
-    <div class="paid-columns">
-      <div><div style="padding:14px 18px;font-weight:700;border-bottom:1px solid var(--border)">✅ Paid ({len(paid_names)})</div>{paid_html}</div>
-      <div><div style="padding:14px 18px;font-weight:700;border-bottom:1px solid var(--border)">⏳ Not Paid Yet ({len(unpaid_names)})</div>{unpaid_html}</div>
-    </div>
+    <table class="big-table">
+      <thead><tr><th>Month</th><th>Winner</th><th style="text-align:right">Points</th><th style="text-align:right">Prize</th></tr></thead>
+      <tbody>{rows}</tbody>
+    </table>
   </div>
 </div>
 """
 
 
-def render_prizes_page(roster, payments):
+def render_prizes_page(roster, payments, monthly_winners=None):
     body = build_prize_pot_section(roster, payments)
+    if monthly_winners:
+        body += build_monthly_winners_section(monthly_winners, payments.get("currency", "EUR"))
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>

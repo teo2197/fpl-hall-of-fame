@@ -1,0 +1,13 @@
+{
+  "_comment": "Curated monthly prize winners for 2026/27, one entry per calendar month. Determined by summing each active roster member's points across that month's gameweeks (via each entry's FPL history) and picking the highest scorer -- not auto-computed by the generator, deliberately verified and added by hand each month so a mid-season roster change or re-run can never silently rewrite an already-decided month. Prize amount is data/payments.json's prizes.monthly_pool_pct / monthly_count applied to the finalized pot, at the time each month was recorded (currently 40 EUR/month).",
+  "season": "2026/27",
+  "months": [
+    {
+      "label": "August 2026",
+      "gameweeks": [1, 2],
+      "winner": "Luca Brincat",
+      "points": 195,
+      "prize_eur": 40
+    }
+  ]
+}
