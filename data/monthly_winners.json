@@ -8,6 +8,13 @@
       "winner": "Luca Brincat",
       "points": 195,
       "prize_eur": 40
+    },
+    {
+      "label": "September 2026",
+      "gameweeks": [3, 4, 5],
+      "winner": "Nick Paris",
+      "points": 208,
+      "prize_eur": 40
     }
   ]
 }
