@@ -48,6 +48,19 @@ Netlify same as before.
   original script's `KNOWN` dict was manually curated — deliberately, so a single
   automated pass can never silently corrupt a past season's record.
 
+## Monthly prize winner
+
+`python monthly_winner.py` works out last month's winner (most points across the
+gameweeks whose deadline falls in that month, net of hits) and prints the top 5.
+It's a dry run by default; `--apply` records the winner in
+`data/monthly_winners.json`, and `--month YYYY-MM` targets a specific month. It
+refuses to write if the month isn't finished, is already recorded, or the top spot
+is tied. It never commits or pushes.
+
+A scheduled Claude task (`fpl-monthly-winner`) runs it on the 4th of each month at
+10:00, reports the result, and waits for approval before publishing. The 4th is
+deliberate: a month's last gameweek can finish up to ~3 days into the next month.
+
 ## Roster changes
 
 - **Someone leaves the league / doesn't rejoin**: move their name from
