@@ -57,9 +57,20 @@ It's a dry run by default; `--apply` records the winner in
 refuses to write if the month isn't finished, is already recorded, or the top spot
 is tied. It never commits or pushes.
 
-A scheduled Claude task (`fpl-monthly-winner`) runs it on the 4th of each month at
-10:00, reports the result, and waits for approval before publishing. The 4th is
-deliberate: a month's last gameweek can finish up to ~3 days into the next month.
+The `Monthly winner` GitHub Actions workflow (`.github/workflows/monthly-winner.yml`)
+runs it in the cloud at 09:00 UTC on the 4th of each month, with a retry on the 5th
+(a month's last gameweek can finish up to ~3 days into the next month). It needs no
+one's laptop to be on:
+
+- **Clear winner** -> records it, regenerates the site, pushes to `main`, and opens an
+  issue ("pay EUR 40") so you get an email.
+- **Tie** -> changes nothing and opens an issue asking for a decision.
+- **Not finished** -> quiet on the 4th; opens an issue only if the 5th also fails.
+- **Anything else** (e.g. the FPL API is down) -> the run fails and GitHub emails you.
+
+To run it by hand: Actions tab -> Monthly winner -> Run workflow (optionally enter a
+month as `YYYY-MM`). The old local Claude scheduled task is paused; it published
+nothing without approval and only ran while the desktop app was open.
 
 ## Roster changes
 
