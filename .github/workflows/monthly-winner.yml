@@ -1,0 +1,144 @@
+name: Monthly winner
+
+# Works out last month's prize winner, publishes it, and opens an issue so you
+# get an email telling you who to pay. Runs on GitHub's servers, so it doesn't
+# matter whether anyone's laptop is on.
+#
+#   clear winner  -> records it, regenerates the site, pushes, opens an issue
+#   tie           -> changes nothing, opens an issue asking for a decision
+#   not finished  -> quiet on the 4th (retries on the 5th), then opens an issue
+#   anything else -> the run fails and GitHub emails you
+
+on:
+  schedule:
+    # 09:00 UTC on the 4th and 5th. The 5th is a retry in case the month's last
+    # gameweek hadn't finished by the 4th. Once a month is recorded, the retry
+    # is a no-op.
+    - cron: "0 9 4,5 * *"
+  workflow_dispatch:
+    inputs:
+      month:
+        description: "Month to process as YYYY-MM (blank = last calendar month)"
+        required: false
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: monthly-winner
+  cancel-in-progress: false
+
+jobs:
+  winner:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONIOENCODING: utf-8
+      # Issues from a non-default branch (testing) are labelled so they're obvious.
+      PREFIX: ${{ github.ref_name != github.event.repository.default_branch && '[TEST] ' || '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install requests
+
+      - name: Work out the winner
+        id: calc
+        env:
+          MONTH: ${{ inputs.month }}
+        run: |
+          args=()
+          if [ -n "$MONTH" ]; then args+=(--month "$MONTH"); fi
+          set +e
+          python monthly_winner.py "${args[@]}" --apply > result.txt 2>&1
+          code=$?
+          set -e
+          cat result.txt
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "label=$(head -1 result.txt | cut -d: -f1)" >> "$GITHUB_OUTPUT"
+          echo "winner=$(grep '^WINNER:' result.txt | sed -E 's/^WINNER: (.*) with ([0-9]+) pts.*/\1/')" >> "$GITHUB_OUTPUT"
+          echo "pts=$(grep '^WINNER:' result.txt | sed -E 's/^WINNER: (.*) with ([0-9]+) pts.*/\2/')" >> "$GITHUB_OUTPUT"
+          if grep -q 'NOT READY' result.txt; then echo "notready=yes" >> "$GITHUB_OUTPUT"; fi
+
+      # Exit codes: 0 winner, 2 nothing to do, 3 tie. Anything else is a real failure.
+      - name: Fail on unexpected errors
+        if: ${{ !contains(fromJSON('["0","2","3"]'), steps.calc.outputs.code) }}
+        run: |
+          echo "monthly_winner.py exited with code ${{ steps.calc.outputs.code }}"
+          exit 1
+
+      - name: Regenerate the site
+        if: steps.calc.outputs.code == '0'
+        run: python fpl_hof.py
+
+      - name: Commit and push
+        if: steps.calc.outputs.code == '0'
+        env:
+          LABEL: ${{ steps.calc.outputs.label }}
+          WINNER: ${{ steps.calc.outputs.winner }}
+          PTS: ${{ steps.calc.outputs.pts }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Add monthly winner: ${LABEL} - ${WINNER} (${PTS} pts)"
+          git push
+
+      - name: Open issue (winner)
+        if: steps.calc.outputs.code == '0'
+        env:
+          LABEL: ${{ steps.calc.outputs.label }}
+          WINNER: ${{ steps.calc.outputs.winner }}
+          PTS: ${{ steps.calc.outputs.pts }}
+        run: |
+          prize=$(jq -r '.months[-1].prize_eur' data/monthly_winners.json)
+          {
+            echo "**${WINNER}** won ${LABEL} with ${PTS} points. Pay them **EUR ${prize}** from the vault."
+            echo
+            echo "The result has been recorded and the site updated."
+            echo
+            echo '```'
+            cat result.txt
+            echo '```'
+          } > body.md
+          gh issue create --title "${PREFIX}${LABEL} winner: ${WINNER} - pay EUR ${prize}" --body-file body.md
+
+      - name: Open issue (tie)
+        if: steps.calc.outputs.code == '3'
+        env:
+          LABEL: ${{ steps.calc.outputs.label }}
+        run: |
+          {
+            echo "Two or more managers tied for first in ${LABEL}. Nothing was recorded or published."
+            echo "The prize rules don't say how to settle a tie, so this needs a decision."
+            echo
+            echo '```'
+            cat result.txt
+            echo '```'
+          } > body.md
+          gh issue create --title "${PREFIX}${LABEL}: tie for first, needs a decision" --body-file body.md
+
+      - name: Open issue (not finished)
+        if: steps.calc.outputs.notready == 'yes'
+        env:
+          LABEL: ${{ steps.calc.outputs.label }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          # On a scheduled run, stay quiet on the 4th: the 5th retries automatically.
+          if [ "$EVENT" = "schedule" ] && [ "$(date -u +%d)" != "05" ]; then
+            echo "Not finished yet; will retry tomorrow."
+            exit 0
+          fi
+          {
+            echo "${LABEL} still wasn't finished on the retry. Nothing was recorded."
+            echo "Run the Monthly winner workflow again from the Actions tab once the gameweeks are done."
+            echo
+            echo '```'
+            cat result.txt
+            echo '```'
+          } > body.md
+          gh issue create --title "${PREFIX}${LABEL}: gameweeks not finished yet" --body-file body.md

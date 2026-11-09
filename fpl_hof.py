@@ -8,6 +8,7 @@ Requires: pip install requests
 """
 import json
 import sys
+import time
 from datetime import date
 from pathlib import Path
 
@@ -45,10 +46,21 @@ def load_json(name):
     return json.loads((DATA / name).read_text(encoding="utf-8"))
 
 
+def get_with_retry(url, tries=4):
+    """The FPL API times out now and then; this runs unattended in CI, so retry."""
+    for attempt in range(tries):
+        try:
+            r = requests.get(url, timeout=20)
+            r.raise_for_status()
+            return r
+        except requests.RequestException:
+            if attempt == tries - 1:
+                raise
+            time.sleep(3 * (attempt + 1))
+
+
 def fetch_entry_history(entry_id):
-    r = requests.get(f"{API}/entry/{entry_id}/history/", timeout=15)
-    r.raise_for_status()
-    return r.json()
+    return get_with_retry(f"{API}/entry/{entry_id}/history/").json()
 
 
 def fetch_entry_picks_gw(entry_id, gw):
