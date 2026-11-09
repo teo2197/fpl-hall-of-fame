@@ -4,16 +4,35 @@
   "months": [
     {
       "label": "August 2026",
-      "gameweeks": [1, 2],
+      "gameweeks": [
+        1,
+        2
+      ],
       "winner": "Luca Brincat",
       "points": 195,
       "prize_eur": 40
     },
     {
       "label": "September 2026",
-      "gameweeks": [3, 4, 5],
+      "gameweeks": [
+        3,
+        4,
+        5
+      ],
       "winner": "Nick Paris",
       "points": 208,
+      "prize_eur": 40
+    },
+    {
+      "label": "October 2026",
+      "gameweeks": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "winner": "Kylie Schembri",
+      "points": 295,
       "prize_eur": 40
     }
   ]
